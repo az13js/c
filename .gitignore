@@ -1,3 +1,4 @@
 # ignore gcc output
 *.out
-
+# ignore swp file
+*.swp
