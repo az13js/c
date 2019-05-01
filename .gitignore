@@ -2,3 +2,6 @@
 *.out
 # ignore swp file
 *.swp
+# ignore mnist dataset
+train-images.idx3-ubyte
+train-labels.idx1-ubyte
