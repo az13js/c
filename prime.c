@@ -27,7 +27,7 @@ int is_prime(int x)
 int main() {
     int i;
     int num = 0;
-    int max = 10000000;
+    int max = 100;
 
     for (i = 0; i < max; i++) {
         if (is_prime(i)) {
