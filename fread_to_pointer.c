@@ -4,8 +4,8 @@
 int main(int argc, char *argv[])
 {
     FILE* file_pointer = fopen("fread_to_pointer.c", "rb");
-    char* buffer;
-    buffer = (char*)malloc(20);
+    unsigned char* buffer;
+    buffer = (char*)calloc(1, 20);
     fread(buffer, 1, 19, file_pointer);
     fclose(file_pointer);
     buffer[19] = '\0';

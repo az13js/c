@@ -89,13 +89,19 @@ struct memory_file memory_file_from(char* file_name)
         return a_memory_file;
     }
 
+    if (fseek(file_pointer, 0, SEEK_SET)) {
+        fclose(file_pointer);
+        a_memory_file.error = 3;
+        return a_memory_file;
+    }
+
     if (!(memory_pointer = (unsigned char*)malloc(file_size_byte))) {
         fclose(file_pointer);
         a_memory_file.error = 5;
         return a_memory_file;
     }
 
-    if (fread(memory_pointer, 1, file_size_byte, file_pointer)) {
+    if (file_size_byte != fread(memory_pointer, 1, file_size_byte, file_pointer)) {
         fclose(file_pointer);
         free(memory_pointer);
         a_memory_file.error = 6;
