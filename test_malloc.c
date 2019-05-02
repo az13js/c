@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
     for (x = 0; x < 10; x++) {
         printf("%d ", arr[x]);
     }
+    printf("\n");
 
     printf("finish\n");
     return 0;
