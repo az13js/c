@@ -243,7 +243,7 @@ void circular_net_dump(struct circular_net net)
     if (!net.have_error) {
         printf("Circular net no error, print weights and derivatives.\n");
         for (layer = 0; layer < net.layer_number - 1; layer++) {
-            printf("  Layer %d:\n", layer + 1);
+            printf("  Layer %d:\n", layer + 2);
             for (cell = 0; cell < net.structure[layer + 1]; cell++) {
                 printf("    Cell %d, weights:\n      ", cell + 1);
                 for (weight_index = 0; weight_index < net.structure[layer]; weight_index++) {
