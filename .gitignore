@@ -5,3 +5,5 @@
 # ignore mnist dataset
 train-images.idx3-ubyte
 train-labels.idx1-ubyte
+# ignore log file
+*.log

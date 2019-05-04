@@ -1,19 +1,15 @@
 #include <stdio.h>
-#include <stdlib.h>
-
-struct MnistDataset
-{
-    unsigned char *fileName;
-    unsigned int dataNumber;
-    unsigned char input[];
-};
+#include "memory_file.h"
 
 int main(int argc, char *argv[])
 {
-    unsigned char* input;
-    unsigned char c;
-    input = calloc(100, sizeof c);
-    printf("%d\n", sizeof input);
+    int i;
+    struct memory_file bin;
+    bin = memory_file_from("dump.c");
+    for (i = 0; i < bin.file_size_byte; i++) {
+        printf("%d,0x%X,%d\n", i, bin.memory_pointer[i], bin.memory_pointer[i]);
+    }
+    memory_file_destory(bin);
     return 0;
 }
 
