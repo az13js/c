@@ -33,5 +33,7 @@ unsigned char circular_net_just_run(struct circular_net net);
 double circular_net_get_mse(struct circular_net net, double* input, double* output);
 // 计算并返回一个批次的平均方差
 double circular_net_get_batch_avg_mse(struct circular_net net, double** inputs, double** outputs, unsigned int batch_size);
+// 训练一批数据1次
+unsigned char circular_net_fit_batch(struct circular_net net, double** inputs, double** outputs, unsigned int batch_size, double lr);
 
 #endif
