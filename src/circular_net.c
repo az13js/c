@@ -241,7 +241,7 @@ void circular_net_dump(struct circular_net net)
     printf("  Have error value: %d\n", net.have_error);
     printf("  Error message: \"%s\"\n", net.error_message);
     if (!net.have_error) {
-        printf("Circular net no error, print weights and derivatives.\n");
+        printf("No error, weights and derivatives:\n");
         for (layer = 0; layer < net.layer_number - 1; layer++) {
             printf("  Layer %d:\n", layer + 2);
             for (cell = 0; cell < net.structure[layer + 1]; cell++) {
@@ -257,6 +257,50 @@ void circular_net_dump(struct circular_net net)
                 printf("\n");
             }
         }
+        printf("Outputs:\n");
+        for (layer = 0; layer < net.layer_number; layer++) {
+            printf("  Layer %d:\n", layer + 1);
+            for (cell = 0; cell < net.structure[layer]; cell++) {
+                printf("    %lf\t", net.outputs[layer][cell]);
+            }
+            printf("\n");
+        }
     }
     printf("Dump info finish.\n");
+}
+
+// 给定输入和输出缓冲区，计算
+unsigned char circular_net_run(
+    struct circular_net net,
+    double* input,
+    double* output
+) {
+    int layer, cell, weight_index, differ;
+    double* input_pointer;
+    double* output_pointer;
+    if (!input) {
+        return 1;
+    }
+    if (!output) {
+        return 2;
+    }
+    if (net.have_error) {
+        return 3;
+    }
+    input_pointer = net.outputs[0];
+    output_pointer = net.outputs[net.layer_number - 1];
+    net.outputs[0] = input;
+    net.outputs[net.layer_number - 1] = output;
+    for (layer = 1; layer < net.layer_number; layer++) {
+        for (cell = 0; cell < net.structure[layer]; cell++) {
+            net.outputs[layer][cell] = 0;
+            for (weight_index = 0; weight_index < net.structure[layer - 1]; weight_index++) {
+                differ = net.outputs[layer - 1][weight_index] - net.weight[layer - 1][cell][weight_index];
+                net.outputs[layer][cell] += differ * differ;
+            }
+            net.outputs[layer][cell] = sqrt(net.outputs[layer][cell]);
+        }
+    }
+    net.outputs[0] = input_pointer;
+    net.outputs[net.layer_number - 1] = output_pointer;
 }
