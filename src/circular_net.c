@@ -209,3 +209,54 @@ struct circular_net circular_net_create(
     }
     return net;
 }
+
+// 随机设置全部的权重
+unsigned char circular_net_random_weight(
+    struct circular_net net,
+    double min,
+    double max
+) {
+    int layer, cell, weight_index;
+    if (net.have_error) {
+        return 1;
+    }
+    if (min > max) {
+        return 2;
+    }
+    for (layer = 0; layer < net.layer_number - 1; layer++) {
+        for (cell = 0; cell < net.structure[layer + 1]; cell++) {
+            for (weight_index = 0; weight_index < net.structure[layer]; weight_index++) {
+                net.weight[layer][cell][weight_index] = (double)rand() / RAND_MAX * (max - min) + min;
+            }
+        }
+    }
+    return 0;
+}
+
+// 打印所有的数据，用于调试
+void circular_net_dump(struct circular_net net)
+{
+    int layer, cell, weight_index;
+    printf("Circular net error info:\n");
+    printf("  Have error value: %d\n", net.have_error);
+    printf("  Error message: \"%s\"\n", net.error_message);
+    if (!net.have_error) {
+        printf("Circular net no error, print weights and derivatives.\n");
+        for (layer = 0; layer < net.layer_number - 1; layer++) {
+            printf("  Layer %d:\n", layer + 1);
+            for (cell = 0; cell < net.structure[layer + 1]; cell++) {
+                printf("    Cell %d, weights:\n      ", cell + 1);
+                for (weight_index = 0; weight_index < net.structure[layer]; weight_index++) {
+                    printf("%lf\t", net.weight[layer][cell][weight_index]);
+                }
+                printf("\n");
+                printf("    Cell %d, derivatives:\n      ", cell + 1);
+                for (weight_index = 0; weight_index < net.structure[layer]; weight_index++) {
+                    printf("%lf\t", net.derivative[layer][cell][weight_index]);
+                }
+                printf("\n");
+            }
+        }
+    }
+    printf("Dump info finish.\n");
+}

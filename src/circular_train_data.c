@@ -58,10 +58,10 @@ struct circular_train_data circular_train_data_create_random(
         }
 
         for (j = 0; j < input_num; j++) {
-            data.inputs[i][j] = 2.0 * rand() / RAND_MAX - 1.0;
+            data.inputs[i][j] = (double)rand() / RAND_MAX * 2.0 - 1.0;
         }
         for (j = 0; j < output_num; j++) {
-            data.outputs[i][j] = 2.0 * rand() / RAND_MAX - 1.0;
+            data.outputs[i][j] = (double)rand() / RAND_MAX * 2.0 - 1.0;
         }
     }
     return data;
