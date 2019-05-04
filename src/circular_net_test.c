@@ -3,20 +3,18 @@
 
 int main(int argc, char *argv[])
 {
-    int layers = 3, i;
-    int structure[3] = {3, 2, 1};
+    int structure[3] = {2, 2, 1};
+    int i;
     struct circular_net net;
-    double input[3] = {1.1, 2.2, 3.3};
-    double output[1] = {-1.1};
-    net = circular_net_create(layers, structure);
-    circular_net_random_weight(net, -1.0, 2.0);
+    double input[2] = {1.0, 0.0};
+    double output[1] = {1.0};
+    net = circular_net_create(3, structure);
+    circular_net_random_weight(net, -0.5, 0.5);
+    circular_net_fit(net, input, output, 0.0);
     circular_net_dump(net);
-    circular_net_run(net, input, output);
-    printf("Input:\n");
-    for (i = 0; i < 3; i++) {
-        printf("%lf\t", input[i]);
+    for (i = 0; i < 400000; i++) {
+        circular_net_fit(net, input, output, 0.1);
     }
-    printf("\nOutput:%lf\n", output[0]);
     circular_net_dump(net);
     return 0;
 }
