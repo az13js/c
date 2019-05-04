@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     circular_net_random_weight(net, -0.5, 0.5);
     circular_net_fit(net, input, output, 0.0);
     circular_net_dump(net);
-    for (i = 0; i < 400000; i++) {
+    for (i = 0; i < 40000000; i++) {
         circular_net_fit(net, input, output, 0.1);
     }
     circular_net_dump(net);
