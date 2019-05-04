@@ -398,3 +398,58 @@ unsigned char circular_net_fit(
     net.outputs[0] = input_pointer;
     return 0;
 }
+
+// 计算并返回方差
+double circular_net_get_mse(struct circular_net net, double* input, double* output)
+{
+    double* input_pointer;
+    double mse, diff;
+    int i;
+    if (net.have_error) {
+        return -1;
+    }
+    if (!input) {
+        return -2;
+    }
+    if (!output) {
+        return -3;
+    }
+    input_pointer = net.outputs[0];
+    net.outputs[0] = input;
+    circular_net_just_run(net);
+    mse = 0.0;
+    for (i = 0; i < net.structure[net.layer_number - 1]; i++) {
+        diff = net.outputs[net.layer_number - 1][i] - output[i];
+        mse += diff * diff;
+    }
+    mse /= 2.0;
+    net.outputs[0] = input_pointer;
+    return mse;
+}
+
+double circular_net_get_batch_avg_mse(
+    struct circular_net net,
+    double** inputs,
+    double** outputs,
+    unsigned int batch_size
+) {
+    double mse, singled;
+    int i;
+    if (net.have_error) {
+        return -1;
+    }
+    if (!inputs) {
+        return -2;
+    }
+    if (!outputs) {
+        return -3;
+    }
+    mse = 0.0;
+    for (i = 0; i < batch_size; i++) {
+        if ((singled = circular_net_get_mse(net, inputs[i], outputs[i])) < 0.0) {
+            return -4;
+        }
+        mse += singled;
+    }
+    return mse / batch_size;
+}

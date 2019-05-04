@@ -29,5 +29,9 @@ unsigned char circular_net_run(struct circular_net net, double* input, double* o
 unsigned char circular_net_fit(struct circular_net net, double* input, double* output, double lr);
 // 计算
 unsigned char circular_net_just_run(struct circular_net net);
+// 计算并返回方差
+double circular_net_get_mse(struct circular_net net, double* input, double* output);
+// 计算并返回一个批次的平均方差
+double circular_net_get_batch_avg_mse(struct circular_net net, double** inputs, double** outputs, unsigned int batch_size);
 
 #endif
