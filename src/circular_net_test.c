@@ -24,10 +24,8 @@ int main(int argc, char *argv[])
     net = circular_net_create(3, structure);
     circular_net_random_weight(net, -0.5, 0.5);
     printf("%.9lf\n", circular_net_get_batch_avg_mse(net, inputs, outputs, 4));
-    for (i = 0; i < 500; i++) {
-        //for (j = 0; j < 4; j++) {
-        //    circular_net_fit(net, inputs[j], outputs[j], 0.5);
-        //}
+    printf("%d\n", circular_net_train_loop(net, inputs, outputs, 4, 0.5, 400));
+    for (i = 0; i < 100; i++) {
         circular_net_fit_batch(net, inputs, outputs, 4, 0.5);
         printf("%d,%.9lf\n", (i + 1), circular_net_get_batch_avg_mse(net, inputs, outputs, 4));
     }

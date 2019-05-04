@@ -35,5 +35,7 @@ double circular_net_get_mse(struct circular_net net, double* input, double* outp
 double circular_net_get_batch_avg_mse(struct circular_net net, double** inputs, double** outputs, unsigned int batch_size);
 // 训练一批数据1次
 unsigned char circular_net_fit_batch(struct circular_net net, double** inputs, double** outputs, unsigned int batch_size, double lr);
+// 用一批数据训练网络若干次
+unsigned char circular_net_train_loop(struct circular_net net, double** inputs, double** outputs, unsigned int batch_size, double lr, unsigned int loop);
 
 #endif

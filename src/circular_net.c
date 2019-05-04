@@ -479,3 +479,29 @@ unsigned char circular_net_fit_batch(
     }
     return 0;
 }
+
+unsigned char circular_net_train_loop(
+    struct circular_net net,
+    double** inputs,
+    double** outputs,
+    unsigned int batch_size,
+    double lr,
+    unsigned int loop
+) {
+    int i;
+    if (net.have_error) {
+        return 1;
+    }
+    if (!inputs) {
+        return 2;
+    }
+    if (!outputs) {
+        return 3;
+    }
+    for (i = 0; i < loop; i++) {
+        if (circular_net_fit_batch(net, inputs, outputs, batch_size, lr)) {
+            return 4;
+        }
+    }
+    return 0;
+}
