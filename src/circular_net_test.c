@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     circular_net_random_weight(net, -0.5, 0.5);
     printf("%.9lf\n", circular_net_get_batch_avg_mse(net, inputs, outputs, 4));
     for (i = 0; i < 500; i++) {
-        circular_net_fit_batch(net, inputs, outputs, 4, 0.5);
+        circular_net_fit_batch(net, inputs, outputs, 4, 0.005);
         printf("%d,%.9lf\n", (i + 1), circular_net_get_batch_avg_mse(net, inputs, outputs, 4));
     }
     return 0;
