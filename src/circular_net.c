@@ -28,7 +28,7 @@ struct circular_net circular_net_create(
         return net;
     }
     net.layer_number = layer_number;
-    net.structure = (unsigned int*)calloc(sizeof (unsigned int), layer_number);
+    net.structure = (unsigned int*)calloc(layer_number, sizeof (unsigned int));
     if (!net.structure) {
         net.have_error = 1;
         net.error_message = "init structure, calloc fail.\0";
@@ -39,7 +39,7 @@ struct circular_net circular_net_create(
         net.structure[i] = structure[i];
     }
     // 初始化输出
-    net.outputs = (double**)calloc(sizeof (double*), layer_number);
+    net.outputs = (double**)calloc(layer_number, sizeof (double*));
     if (!net.outputs) {
         net.have_error = 1;
         net.error_message = "init outputs, calloc fail.\0";
@@ -47,7 +47,7 @@ struct circular_net circular_net_create(
         return net;
     }
     for (i = 0; i < layer_number; i++) {
-        net.outputs[i] = (double*)calloc(sizeof (double), structure[i]);
+        net.outputs[i] = (double*)calloc(structure[i], sizeof (double));
         if (!net.outputs[i]) {
             for (j = 0; j < i; j++) {
                 free(net.outputs[j]);
@@ -60,7 +60,7 @@ struct circular_net circular_net_create(
         }
     }
     // 初始化权重值
-    net.weight = (double***)calloc(sizeof (double**), layer_number - 1);
+    net.weight = (double***)calloc(layer_number - 1, sizeof (double**));
     if (!net.weight) {
         net.have_error = 1;
         net.error_message = "init weight, calloc fail.\0";
@@ -72,7 +72,7 @@ struct circular_net circular_net_create(
         return net;
     }
     for (i = 0; i < layer_number - 1; i++) {
-        net.weight[i] = (double**)calloc(sizeof (double*), structure[i + 1]);
+        net.weight[i] = (double**)calloc(structure[i + 1], sizeof (double*));
         if (!net.weight[i]) {
             // 发生错误，释放所有层的权重
             for (j = 0; j < i; j++) {
@@ -92,8 +92,9 @@ struct circular_net circular_net_create(
             return net;
         }
         // 初始化里面的每个单元的权重数组
-        for (j = 0; j < structure[i]; j++) {
-            net.weight[i][j] = (double*)calloc(sizeof (double), structure[i]);
+        for (j = 0; j < structure[i + 1]; j++) {
+            net.weight[i][j] = (double*)calloc(structure[i], sizeof (double));
+            //printf("layer %d, cell %d, 0x%x\n", i, j, net.weight[i][j]);
             if (!net.weight[i][j]) {
                 for (k = 0; k < j; k++) { // 释放当前层所有单元的权重
                     free(net.weight[i][k]);
@@ -120,7 +121,7 @@ struct circular_net circular_net_create(
     }
 
     // 初始化偏导数
-    net.derivative = (double***)calloc(sizeof (double**), layer_number - 1);
+    net.derivative = (double***)calloc(layer_number - 1, sizeof (double**));
     if (!net.derivative) {
         net.have_error = 1;
         net.error_message = "init derivative, calloc fail.\0";
@@ -142,7 +143,7 @@ struct circular_net circular_net_create(
         return net;
     }
     for (i = 0; i < layer_number - 1; i++) {
-        net.derivative[i] = (double**)calloc(sizeof (double*), structure[i + 1]);
+        net.derivative[i] = (double**)calloc(structure[i + 1], sizeof (double*));
         if (!net.derivative[i]) {
             // 发生错误，释放所有层的偏倒数
             for (j = 0; j < i; j++) {
@@ -172,8 +173,8 @@ struct circular_net circular_net_create(
             return net;
         }
         // 初始化里面的每个单元的偏导数数组
-        for (j = 0; j < structure[i]; j++) {
-            net.derivative[i][j] = (double*)calloc(sizeof (double), structure[i]);
+        for (j = 0; j < structure[i + 1]; j++) {
+            net.derivative[i][j] = (double*)calloc(structure[i], sizeof (double));
             if (!net.derivative[i][j]) {
                 // 释放权重所占的内存
                 for (k = 0; k < layer_number - 1; k++) {
@@ -226,6 +227,8 @@ unsigned char circular_net_random_weight(
     for (layer = 0; layer < net.layer_number - 1; layer++) {
         for (cell = 0; cell < net.structure[layer + 1]; cell++) {
             for (weight_index = 0; weight_index < net.structure[layer]; weight_index++) {
+                //printf("layer %d, cell %d, weight %d\n", layer, cell, weight_index);
+                //printf("layer %d, cell %d, 0x%x\n", layer, cell, net.weight[layer][cell]);
                 net.weight[layer][cell][weight_index] = (double)rand() / RAND_MAX * (max - min) + min;
             }
         }
@@ -387,6 +390,7 @@ unsigned char circular_net_fit(
             }
         }
     }
+
     // 计算偏导数完成，下面进行梯度下降
     for (layer = 0; layer < net.layer_number - 1; layer++) {
         for (cell = 0; cell < net.structure[layer + 1]; cell++) {

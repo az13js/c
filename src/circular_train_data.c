@@ -15,13 +15,13 @@ struct circular_train_data circular_train_data_create_random(
     data.have_error    = 0;
     data.error_message = "\0";
 
-    data.inputs = (double**)calloc(sizeof (double*), total);
+    data.inputs = (double**)calloc(total, sizeof (double*));
     if (!data.inputs) {
         data.have_error = 1;
         data.error_message = "calloc fail.\0";
         return data;
     }
-    data.outputs = (double**)calloc(sizeof (double*), total);
+    data.outputs = (double**)calloc(total, sizeof (double*));
     if (!data.outputs) {
         free(data.inputs);
         data.have_error = 1;
@@ -30,7 +30,7 @@ struct circular_train_data circular_train_data_create_random(
     }
 
     for (i = 0; i < total; i++) {
-        data.inputs[i] = (double*)calloc(sizeof (double), input_num);
+        data.inputs[i] = (double*)calloc(input_num, sizeof (double));
         if (!data.inputs[i]) {
             for (j = 0; j < i; j++) {
                 free(data.inputs[j]);
@@ -43,7 +43,7 @@ struct circular_train_data circular_train_data_create_random(
             return data;
         }
 
-        data.outputs[i] = (double*)calloc(sizeof (double), output_num);
+        data.outputs[i] = (double*)calloc(output_num, sizeof (double));
         if (!data.outputs[i]) {
             for (j = 0; j < i; j++) {
                 free(data.inputs[j]);
@@ -170,14 +170,14 @@ struct circular_train_data circular_train_data_create_from_file(char* file)
         return data;
     }
 
-    data.inputs = (double**)calloc(sizeof (double*), data.total);
+    data.inputs = (double**)calloc(data.total, sizeof (double*));
     if (!data.inputs) {
         fclose(file_pointer);
         data.have_error = 1;
         data.error_message = "calloc fail.\0";
         return data;
     }
-    data.outputs = (double**)calloc(sizeof (double*), data.total);
+    data.outputs = (double**)calloc(data.total, sizeof (double*));
     if (!data.outputs) {
         fclose(file_pointer);
         free(data.inputs);
@@ -187,7 +187,7 @@ struct circular_train_data circular_train_data_create_from_file(char* file)
     }
 
     for (i = 0; i < data.total; i++) {
-        data.inputs[i] = (double*)calloc(sizeof (double), data.input_num);
+        data.inputs[i] = (double*)calloc(data.input_num, sizeof (double));
         if (!data.inputs[i]) {
             for (j = 0; j < i; j++) {
                 free(data.inputs[j]);
@@ -214,7 +214,7 @@ struct circular_train_data circular_train_data_create_from_file(char* file)
             return data;
         }
 
-        data.outputs[i] = (double*)calloc(sizeof (double), data.output_num);
+        data.outputs[i] = (double*)calloc(data.output_num, sizeof (double));
         if (!data.outputs[i]) {
             for (j = 0; j < i; j++) {
                 free(data.inputs[j]);
