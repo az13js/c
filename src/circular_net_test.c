@@ -5,7 +5,7 @@
 int main(int argc, char *argv[])
 {
     int i, j;
-    int structure[3] = {2, 2, 1};
+    int structure[5] = {2, 3, 4, 3, 1};
     double a[4][2] = {{0,0}, {0,1}, {1,0}, {1,1}};
     double b[4][1] = {{0}, {1}, {1}, {0}};
     double** inputs;
@@ -24,8 +24,7 @@ int main(int argc, char *argv[])
     net = circular_net_create(3, structure);
     circular_net_random_weight(net, -0.5, 0.5);
     printf("%.9lf\n", circular_net_get_batch_avg_mse(net, inputs, outputs, 4));
-    printf("%d\n", circular_net_train_loop(net, inputs, outputs, 4, 0.5, 400));
-    for (i = 0; i < 100; i++) {
+    for (i = 0; i < 500; i++) {
         circular_net_fit_batch(net, inputs, outputs, 4, 0.5);
         printf("%d,%.9lf\n", (i + 1), circular_net_get_batch_avg_mse(net, inputs, outputs, 4));
     }
