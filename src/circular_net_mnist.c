@@ -6,6 +6,7 @@
 
 int main(int argc, char *argv[])
 {
+    int layers = 3;
     unsigned int* structure;
     unsigned int i, j;
     unsigned char* mnist_memory_file_pointer;
@@ -13,7 +14,7 @@ int main(int argc, char *argv[])
     struct circular_train_data data;
     struct circular_net net;
 
-    structure = (unsigned int*)calloc(3, sizeof (unsigned int));
+    structure = (unsigned int*)calloc(layers, sizeof (unsigned int));
 
     mnist_data = mnist_create();
     if (mnist_data.have_error) {
@@ -40,7 +41,7 @@ int main(int argc, char *argv[])
         }
         mnist_memory_file_pointer = mnist_get_image_data(mnist_data, i + 1);
         for (j = 0; j < mnist_image_row(mnist_data) * mnist_image_column(mnist_data); j++) {
-            data.inputs[i][j] = (double)mnist_memory_file_pointer[j];
+            data.inputs[i][j] = (double)mnist_memory_file_pointer[j] / 255.0;
         }
     }
 
@@ -48,7 +49,7 @@ int main(int argc, char *argv[])
 
     structure[0] = data.input_num;
     structure[1] = 29;
-    structure[2] = data.output_num;
+    structure[layers - 1] = data.output_num;
     printf("structure %d, %d, %d\n", structure[0], structure[1], structure[2]);
     net = circular_net_create(3, structure);
 
@@ -59,11 +60,11 @@ int main(int argc, char *argv[])
         return -3;
     }
 
-    circular_net_random_weight(net, -0.05, 0.05);
+    circular_net_random_weight(net, -0.005, 0.005);
 
     printf("MSE : %.9lf\n", circular_net_get_batch_avg_mse(net, data.inputs, data.outputs, data.total));
     for (i = 0; i < 200; i++) {
-        circular_net_fit_batch(net, data.inputs, data.outputs, data.total, 0.01);
+        circular_net_fit_batch(net, data.inputs, data.outputs, data.total, 0.0001);
         printf("MSE : %.9lf\n", circular_net_get_batch_avg_mse(net, data.inputs, data.outputs, data.total));
     }
 
