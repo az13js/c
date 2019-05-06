@@ -17,5 +17,7 @@ struct lstmlib
 struct lstmlib* lstmlib_create(int length);
 char* lstmlib_get_error_message(struct lstmlib* lstm);
 void lstmlib_destory(struct lstmlib* lstm);
+void lstmlib_printx(struct lstmlib* lstm);
+void lstmlib_fillx(struct lstmlib* lstm, double v);
 
 #endif

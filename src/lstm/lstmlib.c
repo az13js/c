@@ -22,13 +22,41 @@ struct lstmlib* lstmlib_create(int length)
 
 char* lstmlib_get_error_message(struct lstmlib* lstm)
 {
+    char x = "Error, NULL.\n";
+    if (!lstm) {
+        return &x;
+    }
     return (*lstm).error_message;
 }
 
 void lstmlib_destory(struct lstmlib* lstm)
 {
-    if (!(*lstm).have_error) {
-        free((*lstm).x);
+    if (lstm) {
+        if (!(*lstm).have_error) {
+            free((*lstm).x);
+        }
+        free(lstm);
     }
-    free(lstm);
+}
+
+void lstmlib_printx(struct lstmlib* lstm)
+{
+    if (lstm) {
+        if (!(*lstm).have_error) {
+            for (i = 0; i < (*lstm).length; i++) {
+                printf("%d, %lf\n", (i + 1), (*lstm).x[i]);
+            }
+        }
+    }
+}
+
+void lstmlib_fillx(struct lstmlib* lstm, double v)
+{
+    if (lstm) {
+        if (!(*lstm).have_error) {
+            for (i = 0; i < (*lstm).length; i++) {
+                (*lstm).x[i] = v;
+            }
+        }
+    }
 }
