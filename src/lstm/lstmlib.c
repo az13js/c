@@ -2,7 +2,7 @@
 
 struct lstmlib* lstmlib_create(int length)
 {
-    struct lstmlib* lstm = malloc(sizeof (struct lstmlib*));
+    struct lstmlib* lstm = (struct lstmlib*)malloc(sizeof (struct lstmlib));
     if (length < 1) {
         (*lstm).have_error = 1;
         (*lstm).error_message = "Error, length < 1";
