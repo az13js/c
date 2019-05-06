@@ -14,6 +14,9 @@ struct lstmlib* lstmlib_create(int length)
         (*lstm).error_message = "calloc() fail.\n";
         return lstm;
     }
+    (*lstm).Wfh = rand() / RAND_MAX - 0.5;
+    (*lstm).Wfx = rand() / RAND_MAX - 0.5;
+    (*lstm).bf = rand() / RAND_MAX - 0.5;
     (*lstm).length = length;
     (*lstm).have_error = 0;
     (*lstm).error_message = "\n";
@@ -55,6 +58,17 @@ void lstmlib_fillx(struct lstmlib* lstm, double v)
             for (i = 0; i < (*lstm).length; i++) {
                 (*lstm).x[i] = v;
             }
+        }
+    }
+}
+
+void lstmlib_print_params(struct lstmlib* lstm)
+{
+    if (lstm) {
+        if (!(*lstm).have_error) {
+            printf("Wfh=%lf\n", (*lstm).Wfh);
+            printf("Wfx=%lf\n", (*lstm).Wfx);
+            printf("bf=%lf\n", (*lstm).bf);
         }
     }
 }
