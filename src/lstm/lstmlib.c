@@ -102,6 +102,7 @@ void lstmlib_randx(struct lstmlib* lstm)
 
 void lstmlib_run_forgetgate(struct lstmlib* lstm)
 {
+    int i;
     if (lstm) {
         if (!(*lstm).have_error) {
             for (i = 0; i < (*lstm).length; i++) {
