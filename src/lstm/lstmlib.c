@@ -22,10 +22,6 @@ struct lstmlib* lstmlib_create(int length)
 
 char* lstmlib_get_error_message(struct lstmlib* lstm)
 {
-    char x = "Error, NULL.\n";
-    if (!lstm) {
-        return &x;
-    }
     return (*lstm).error_message;
 }
 
