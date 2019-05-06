@@ -10,6 +10,8 @@ struct lstmlib
 {
     int length;
     double* x;
+    double* h;
+    double* f; // 遗忘门的输出
     double Wfh;
     double Wfx;
     double bf;
@@ -23,5 +25,8 @@ void lstmlib_destory(struct lstmlib* lstm);
 void lstmlib_printx(struct lstmlib* lstm);
 void lstmlib_fillx(struct lstmlib* lstm, double v);
 void lstmlib_print_params(struct lstmlib* lstm);
+void lstmlib_randx(struct lstmlib* lstm);
+void lstmlib_run_forgetgate(struct lstmlib* lstm);
+void lstmlib_print_forgetgate(struct lstmlib* lstm);
 
 #endif

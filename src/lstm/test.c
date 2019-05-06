@@ -8,6 +8,9 @@ int main(int argc, char *argv[])
     lstmlib_fillx(lstm, 0.123123);
     lstmlib_printx(lstm);
     lstmlib_print_params(lstm);
+    lstmlib_randx(lstm);
+    lstmlib_run_forgetgate(lstm);
+    lstmlib_print_forgetgate(lstm);
     lstmlib_destory(lstm);
     return 0;
 }
