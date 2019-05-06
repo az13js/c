@@ -41,6 +41,7 @@ void lstmlib_destory(struct lstmlib* lstm)
 
 void lstmlib_printx(struct lstmlib* lstm)
 {
+    int i;
     if (lstm) {
         if (!(*lstm).have_error) {
             for (i = 0; i < (*lstm).length; i++) {
@@ -52,6 +53,7 @@ void lstmlib_printx(struct lstmlib* lstm)
 
 void lstmlib_fillx(struct lstmlib* lstm, double v)
 {
+    int i;
     if (lstm) {
         if (!(*lstm).have_error) {
             for (i = 0; i < (*lstm).length; i++) {
