@@ -71,6 +71,19 @@ struct lstmlib* lstmlib_create(int length)
         free((*lstm).c);
         return lstm;
     }
+    (*lstm).hp = (double*)calloc(length, sizeof (double));
+    if (!(*lstm).hp) {
+        (*lstm).have_error = 1;
+        (*lstm).error_message = "calloc() fail.\n";
+        free((*lstm).x);
+        free((*lstm).h);
+        free((*lstm).f);
+        free((*lstm).i);
+        free((*lstm).tilde_c);
+        free((*lstm).c);
+        free((*lstm).o);
+        return lstm;
+    }
     (*lstm).Wfh = (double)rand() / RAND_MAX - 0.5;
     (*lstm).Wfx = (double)rand() / RAND_MAX - 0.5;
     (*lstm).bf = (double)rand() / RAND_MAX - 0.5;
@@ -191,6 +204,39 @@ void lstmlib_print_h(struct lstmlib* lstm)
             for (i = 0; i < (*lstm).length; i++) {
                 printf("%d,%lf,%lf,%lf,%lf,%lf,%lf,%lf\n", (i + 1), (*lstm).x[i], (*lstm).f[i], (*lstm).i[i], (*lstm).tilde_c[i], (*lstm).c[i], (*lstm).o[i], (*lstm).h[i]);
             }
+        }
+    }
+}
+
+void lstmlib_set_hp(struct lstmlib* lstm)
+{
+    int i;
+    if (lstm) {
+        if (!(*lstm).have_error) {
+            printf("Call lstmlib_set_hp:\n");
+            for (i = 0; i < (*lstm).length; i++) {
+                (*lstm).hp[i] = (double)rand() / RAND_MAX - 0.5;
+                printf("  hp[%d]=%lf\n", (i + 1), (*lstm).hp[i]);
+            }
+            printf("print hp finish.\n");
+        }
+    }
+}
+
+void lstmlib_calc_d(struct lstmlib* lstm)
+{
+    if (lstm) {
+        if (!(*lstm).have_error) {
+            printf("Call latmlib_calc_d:\n");
+        }
+    }
+}
+
+void lstmlib_print_d(struct lstmlib* lstm)
+{
+    if (lstm) {
+        if (!(*lstm).have_error) {
+            printf("Call lstmlib_print_d:\n");
         }
     }
 }

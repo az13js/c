@@ -16,6 +16,7 @@ struct lstmlib
     double* tilde_c; // 中间变量
     double* c; // 状态参数C
     double* o; // 输出门的输出
+    double* hp; // 期望输出值
     double Wfh;
     double Wfx;
     double bf;
@@ -41,5 +42,8 @@ void lstmlib_print_params(struct lstmlib* lstm);
 void lstmlib_randx(struct lstmlib* lstm);
 void lstmlib_run_calc(struct lstmlib* lstm);
 void lstmlib_print_h(struct lstmlib* lstm);
+void lstmlib_set_hp(struct lstmlib* lstm);
+void lstmlib_calc_d(struct lstmlib* lstm);
+void lstmlib_print_d(struct lstmlib* lstm);
 
 #endif
